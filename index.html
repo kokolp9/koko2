@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مؤسسه كيرو للأدوات الصحيه</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <h1>مؤسسة كيرو للأدوات الصحيه</h1>
+    <nav>
+      <button id="show-inventory-btn">المخزون</button>
+      <button id="show-sales-btn">المبيعات اليومية</button>
+      <button id="show-invoice-btn">إصدار فاتورة</button>
+      <button id="show-sales-log-btn">سجل المبيعات</button>
+      <button id="show-archive-btn">أرشيف الفواتير</button>
+      <button id="show-invoice-log-btn">سجل الفواتير</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="inventory" style="display: none;">
+      <h2>إدارة المخزون</h2>
+      <div class="controls" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <label for="new-product-name" style="margin-left: auto;">اسم المنتج:</label>
+        <input type="text" id="new-product-name" style="flex-grow: 1; max-width: 200px;">
+        <label for="new-product-price" style="margin-left: auto;">السعر:</label>
+        <input type="number" id="new-product-price" min="0" step="0.01" style="width: 100px;">
+        <label for="new-product-quantity" style="margin-left: auto;">الكمية:</label>
+        <input type="number" id="new-product-quantity" min="0" style="width: 100px;">
+        <button class="primary" id="add-product-btn">إضافة منتج</button>
+      </div>
+      <div class="search-controls" style="display: flex; align-items: center; gap: 10px;">
+        <label for="search-product-name" style="margin-left: auto;">بحث باسم المنتج:</label>
+        <input type="text" id="search-product-name" style="flex-grow: 1; max-width: 600px;">
+        <button id="search-inventory-btn">بحث</button>
+      </div>
+      <div class="increase-quantity-form" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <label for="increase-product-name" style="margin-left: auto;">اسم المنتج:</label>
+        <input type="text" id="increase-product-name" style="flex-grow: 1; max-width: 200px;">
+        <label for="increase-product-quantity" style="margin-left: auto;">الكمية المراد إضافتها:</label>
+        <input type="number" id="increase-product-quantity" min="1" style="width: 100px;">
+        <button class="secondary" id="increase-quantity-btn">زيادة الكمية</button>
+      </div>
+      <div class="update-price-form" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <label for="update-price-product-name" style="margin-left: auto;">اسم المنتج:</label>
+        <input type="text" id="update-price-product-name" style="flex-grow: 1; max-width: 200px;">
+        <label for="new-product-price-update" style="margin-left: auto;">السعر الجديد:</label>
+        <input type="number" id="new-product-price-update" min="0" step="0.01" style="width: 100px;">
+        <button id="update-price-btn">تحديث السعر</button>
+      </div>
+      <div class="table-container">
+        <table id="inventory-table">
+          <thead>
+            <tr>
+              <th>اسم المنتج</th>
+              <th>السعر</th>
+              <th>الكمية</th>
+              <th>العمليات</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sales" style="display: none;">
+      <h2>المبيعات اليومية</h2>
+      <div class="controls" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <label for="sales-buyer-name" style="margin-left: auto;">اسم المشتري:</label>
+        <input type="text" id="sales-buyer-name" style="flex-grow: 1; max-width: 500px;">
+        <label for="payment-status" style="margin-left: auto;">حالة الدفع:</label>
+        <select id="payment-status" style="width: 120px;">
+          <option value="كامل">كامل</option>
+          <option value="جزئي">جزئي</option>
+        </select>
+      </div>
+      <div class="payment-details" style="display: none; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px;">
+        <label for="amount-paid" style="margin-left: auto;">المبلغ المدفوع:</label>
+        <input type="number" id="amount-paid" min="0" step="0.01" style="width: 100px;">
+        <label for="amount-remaining" style="margin-left: auto;">المبلغ المتبقي:</label>
+        <input type="number" id="amount-remaining" min="0" step="0.01" style="width: 100px;" readonly>
+      </div>
+      <div class="controls" style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px;">
+        <label for="sales-product-name" style="margin-left: auto;">اسم المنتج:</label>
+        <input type="text" id="sales-product-name" style="flex-grow: 1; max-width: 200px;">
+        <label for="sales-quantity" style="margin-left: auto;">الكمية:</label>
+        <input type="number" id="sales-quantity" min="1" style="width: 100px;">
+        <label for="sales-price" style="margin-left: auto;">السعر (اختياري):</label>
+        <input type="number" id="sales-price" min="0" step="0.01" style="width: 100px;">
+        <button class="primary" id="add-to-sales-btn">إضافة للبيع</button>
+      </div>
+      <div class="table-container">
+        <table id="daily-sales-table">
+          <thead>
+            <tr>
+              <th>اسم المنتج</th>
+              <th>الكمية</th>
+              <th>السعر</th>
+              <th>الإجمالي</th>
+              <th>العمليات</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align: left;">الإجمالي العام:</td>
+              <td id="sales-total">0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <button class="action" id="record-sales-btn">تسجيل المبيعات</button>
+    </section>
+
+    <section id="invoice" style="display: none;">
+      <div class="invoice-header">
+        <h2 class="invoice-company-name"></h2>
+        <p class="invoice-info">التاريخ: <span id="invoice-date"></span></p>
+        <p class="invoice-info">رقم الفاتورة: <input type="text" id="invoice-number" value="" readonly></p>
+      </div>
+      <div class="customer-info">
+        <label for="customer-name" style="font-weight: bold;">اسم العميل:</label>
+        <input type="text" id="customer-name" placeholder="أدخل اسم العميل" style="flex-grow: 1; text-align: right; direction: rtl;">
+      </div>
+      <div class="add-item-section">
+        <label for="invoice-product-name" style="font-weight: bold;">اسم المنتج:</label>
+        <input type="text" id="invoice-product-name" placeholder="ابحث عن المنتج أو أدخله">
+        <label for="invoice-quantity" style="font-weight: bold;">الكمية:</label>
+        <input type="number" id="invoice-quantity" min="1" value="1">
+        <label for="invoice-price" style="font-weight: bold;">السعر (اختياري):</label>
+        <input type="number" id="invoice-price" min="0" step="0.01" placeholder="تلقائي إذا لم يُدخل">
+        <button class="primary" id="add-to-invoice-btn">إضافة للفاتورة</button>
+      </div>
+      <div class="table-container" id="invoice-items-table-container">
+        <table id="invoice-items-table">
+          <thead>
+            <tr>
+              <th>اسم المنتج</th>
+              <th>الكمية</th>
+              <th>السعر</th>
+              <th>الإجمالي</th>
+              <th>العمليات</th>
+            </tr>
+          </thead>
+          <tbody id="invoice-items-table-body">
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-align: left; font-weight: bold;">الإجمالي:</td>
+              <td id="invoice-total" style="text-align: left; font-weight: bold;">0.00</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="invoice-actions">
+        <button class="action" id="save-invoice-btn">حفظ الفاتورة</button>
+        <button class="secondary" id="archive-invoice-btn">أرشفة الفاتورة</button>
+        <button class="primary" id="print-invoice-btn">طباعة الفاتورة</button>
+      </div>
+    </section>
+
+    <section id="sales-log" style="display: none;">
+      <h2>سجل المبيعات</h2>
+      <div class="log-display" id="sales-log-display">
+      </div>
+    </section>
+
+    <section id="invoice-archive" style="display: none;">
+      <h2>أرشيف الفواتير</h2>
+      <div class="archive-display" id="invoice-archive-display">
+      </div>
+    </section>
+
+    <section id="invoice-log" style="display: none;">
+      <h2>سجل الفواتير</h2>
+      <div class="search-controls" style="display: flex; align-items: center; gap: 10px;">
+        <label for="search-invoice-name" style="margin-left: auto; font-weight: bold;">بحث باسم العميل:</label>
+        <input type="text" id="search-invoice-name" style="flex-grow: 1; max-width: 650px;">
+        <button id="search-invoice-btn">بحث</button>
+      </div>
+      <div class="invoice-log-display" id="invoice-log-display">
+      </div>
+      <div id="invoice-details-display" style="display:none;">
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 مؤسسه كيرو للأدوات الصحيه</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
